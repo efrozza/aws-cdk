@@ -34,20 +34,29 @@ public class RdsStack extends Stack {
         // criar instancia RDS
 
         DatabaseInstance databaseInstance = DatabaseInstance.Builder
+                // nome da instancia a ser criada
                 .create(this, "Rds01")
                 .instanceIdentifier("aws-project01-db")
+                // engine de banco de dados a ser utilizado
                 .engine(DatabaseInstanceEngine.mysql(MySqlInstanceEngineProps.builder()
                         .version(MysqlEngineVersion.VER_5_7)
                         .build()))
+                // essa instancia do RDS sera criada dentro na nossa vpc
                 .vpc(vpc)
+                // usaurio e senha da instncia RDS
                 .credentials(Credentials.fromUsername("admin",
                         CredentialsFromUsernameOptions.builder()
-                .password(SecretValue.plainText(databasePassword.getValueAsString()))
-                .build()))
+                        .password(SecretValue.plainText(databasePassword.getValueAsString()))
+                        .build()))
+                // tamanho da maquina que vai executar a instancia
                 .instanceType(InstanceType.of(InstanceClass.BURSTABLE2, InstanceSize.MICRO))
+                // permite varia zonas
                 .multiAz(false)
+                // tamanho do disco, 10GB
                 .allocatedStorage(10)
+                // Definido o security group da instancia
                 .securityGroups(Collections.singletonList(iSecurityGroup))
+                // subrede da instancia
                 .vpcSubnets(SubnetSelection.builder()
                         .subnets(vpc.getPrivateSubnets())
                         .build())
