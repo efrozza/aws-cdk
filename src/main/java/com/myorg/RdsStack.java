@@ -1,9 +1,6 @@
 package com.myorg;
 
-import software.amazon.awscdk.CfnParameter;
-import software.amazon.awscdk.SecretValue;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.*;
 import software.amazon.awscdk.services.ec2.*;
 import software.amazon.awscdk.services.rds.*;
 import software.constructs.Construct;
@@ -62,7 +59,20 @@ public class RdsStack extends Stack {
                         .build())
                 .build();
 
+        // Expondo o endpoint do banco de dados - Sera utilizado pelo spring boot
+        // para conectar ao banco
 
+        CfnOutput.Builder.create(this, "rds-endpoint")
+                .exportName("rds-endpoint")
+                .value(databaseInstance.getDbInstanceEndpointAddress())
+                .build();
+
+        // Exportando a senha de acesso
+
+        CfnOutput.Builder.create(this, "rds-passoword")
+                .exportName("rds-password")
+                .value(databasePassword.getValueAsString())
+                .build();
 
     }
 }
