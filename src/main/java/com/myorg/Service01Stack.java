@@ -28,8 +28,8 @@ public class Service01Stack extends Stack {
         // o Fargate nao usa instancias EC2, roda de acordo com os recursos alocados
 
         Map<String, String> envVariables = new HashMap<>();
-        envVariables.put("SPRING_DATASOURCE_URL", "jdbc:mariadb//" + Fn.importValue("rds-endpoint")
-                + ":3306/aws_project01?CreateDataBaseIfNotExist=true");
+        envVariables.put("SPRING_DATASOURCE_URL", "jdbc:mysql://" + Fn.importValue("rds-endpoint")
+                + ":3306/aws_project01?createDataBaseIfNotExist=true");
         envVariables.put("SPRING_DATASOURCE_USERNAME", "admin");
         envVariables.put("SPRING_DATASOURCE_PASSWORD", Fn.importValue("rds-password"));
 
@@ -49,7 +49,7 @@ public class Service01Stack extends Stack {
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
                                 .containerName("awsprojeto01")
-                                .image(ContainerImage.fromRegistry("efrozza/awsprojeto01:1.9.0"))
+                                .image(ContainerImage.fromRegistry("efrozza/awsprojeto01:1.10.0"))
                                 .containerPort(8080)
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
                                         .logGroup(LogGroup.Builder.create(this, "Service01Group")
