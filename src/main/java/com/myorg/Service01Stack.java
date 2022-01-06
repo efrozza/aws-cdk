@@ -29,7 +29,7 @@ public class Service01Stack extends Stack {
 
         Map<String, String> envVariables = new HashMap<>();
         envVariables.put("SPRING_DATASOURCE_URL", "jdbc:mysql://" + Fn.importValue("rds-endpoint")
-                + ":3306/aws_project01?createDataBaseIfNotExist=true");
+                + ":3306/aws_project01?createDatabaseIfNotExist=true");
         envVariables.put("SPRING_DATASOURCE_USERNAME", "admin");
         envVariables.put("SPRING_DATASOURCE_PASSWORD", Fn.importValue("rds-password"));
 
